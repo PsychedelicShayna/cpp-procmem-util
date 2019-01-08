@@ -5,4 +5,4 @@ To make a new game specific trainer, subclass the Trainer class and make sure to
 
 Make sure to compile on same architecture as the game you're targetting.
 
-See https://github.com/Shayna-x02/SCB_MoneyEditor for an example of the header in use.
+See https://github.com/Shayna-x02/SCB-MoneyEditor for an example of the header in use.
