@@ -34,11 +34,11 @@ protected:
 		return base_address;
 	}
 
-	unsigned __int64 discover_dynamic_address_(unsigned __int64 static_address, std::vector<unsigned __int64> offsets) const {
+	unsigned __int64 discover_dynamic_address_(unsigned __int64 static_address, std::vector<unsigned __int64> offsets, unsigned __int64 base_address = 0) const {
 		unsigned __int64 pointer_buffer = 0;
 		unsigned __int64 trailing_offset = offsets.at(offsets.size() - 1);
 
-		ReadProcessMemory(m_process_handle, (void*)(m_base_address + static_address), &pointer_buffer, sizeof(pointer_buffer), 0);
+		ReadProcessMemory(m_process_handle, (void*)((base_address ? base_address : m_base_address) + static_address), &pointer_buffer, sizeof(pointer_buffer), 0);
 
 		for (std::size_t i = 0; i < offsets.size() - 1; i++) {
 			const unsigned __int64& current_offset = offsets.at(i);
@@ -49,20 +49,23 @@ protected:
 		return pointer_buffer;
 	}
 
-	__int64 read_address_data_(unsigned __int64 address) const {
-		__int64 address_data = 0;
-		ReadProcessMemory(m_process_handle, (void*)address, &address_data, sizeof(address_data), 0);
-		return address_data;
-	}
-
-	void write_address_value_(unsigned __int64 address, __int64 data) const {
-		WriteProcessMemory(m_process_handle, (void*)address, &data, sizeof(data), 0);
-	}
-
 	void trainer_setup_() {
 		m_process_window = FindWindowA(0, m_window_title);
 		GetWindowThreadProcessId(m_process_window, (unsigned long*)&m_process_id);
 		m_process_handle = OpenProcess(PROCESS_ALL_ACCESS, false, m_process_id);
 		m_base_address = discover_base_address_(m_process_title, m_process_id);
+	}
+
+public:
+	template <typename DataType>
+	DataType read_address_data(unsigned __int64 address) const {
+		DataType address_data;
+		ReadProcessMemory(m_process_handle, (void*)address, &address_data, sizeof(address_data), 0);
+		return address_data;
+	}
+
+	template <typename DataType>
+	void write_address_data(unsigned __int64 address, DataType data) const {
+		WriteProcessMemory(m_process_handle, (void*)address, &data, sizeof(data), 0);
 	}
 };
