@@ -5,16 +5,15 @@
 #include <vector>
 
 class Trainer {
-private:  virtual void __interface__() = 0;
 protected:
 	unsigned __int64	m_base_address;
 	char*				m_window_title;
-	char*				m_process_title;
+	char*				m_module_title;
 	void*				m_process_handle;
 	HWND__*				m_process_window;
 	unsigned __int16	m_process_id;
 
-	unsigned __int64 discover_base_address_(char* process_title, unsigned __int16 process_id) const {
+	unsigned __int64 discover_base_address_(char* module_title, unsigned __int16 process_id) const {
 		unsigned __int64 base_address = 0;
 
 		void* handle_snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, process_id);
@@ -24,7 +23,7 @@ protected:
 		module_entry_vector.dwSize = sizeof(module_entry_vector);
 		if (!Module32First(handle_snapshot, &module_entry_vector)) return EXIT_FAILURE;
 		do {
-			if (!_stricmp(module_entry_vector.szModule, process_title)) {
+			if (!_stricmp(module_entry_vector.szModule, module_title)) {
 				base_address = (unsigned __int64)module_entry_vector.modBaseAddr;
 				break;
 			}
@@ -49,11 +48,39 @@ protected:
 		return pointer_buffer;
 	}
 
+	HWND__* fetch_process_window_(char* window_title) const {
+		HWND__* process_window = nullptr;
+		process_window = FindWindowA(0, window_title);
+		if (!IsWindow(process_window) || process_window == nullptr) {
+			throw std::exception("Invalid window. (No window under that title exists?)");
+			return nullptr;
+		}
+
+		return process_window;
+	}
+
+	unsigned __int16 fetch_process_id_(HWND__* process_window) const {
+		unsigned __int16 process_id = NULL;
+		GetWindowThreadProcessId(m_process_window, (unsigned long*)&process_id);
+		if (process_id == NULL)
+			throw std::exception("Unable to resolve process ID. Remained NULL.");
+
+		return process_id;
+	}
+
+	void* fetch_process_handle_(unsigned __int16 process_id) const {
+		void* process_handle = nullptr;
+		process_handle = OpenProcess(PROCESS_ALL_ACCESS, false, process_id);
+		if (process_handle == nullptr)
+			throw std::exception("Failed to get process handle. Handle remained nullptr.");
+
+		return process_handle;
+	}
+
 	void trainer_setup_() {
-		m_process_window = FindWindowA(0, m_window_title);
-		GetWindowThreadProcessId(m_process_window, (unsigned long*)&m_process_id);
-		m_process_handle = OpenProcess(PROCESS_ALL_ACCESS, false, m_process_id);
-		m_base_address = discover_base_address_(m_process_title, m_process_id);
+		m_process_window = fetch_process_window_(m_window_title);
+		m_process_id = fetch_process_id_(m_process_window);
+		m_process_handle = fetch_process_handle_(m_process_id);
 	}
 
 public:
