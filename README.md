@@ -1,11 +1,4 @@
-# Trainer Header
+# Memory Interface
+This is a single header file, containing an interface (abstract class) that should be inherited from in order to use it. The interface contains methods designed to aid in accessing the memory of another process. This makes heavy use of the Windows.h and TlHelp32.h header and does not work on Unix based systems. This is exclusively a Windows interface. 
 
-This is a small, but useful header containing tools to assist with lightweight trainer creation. The Trainer class contains a dynamic address resolver, a base address resolver, templated read/write functions for use with any type you'd like, and automatic Winapi hooking. The total amount of code for all of this is relatively small, but it's designed in a way that's reusable and applicable to most scenarios where you'd need to create a trainer.
-
-# Instructions
-The Trainer class contains a pure virtual method at the absolute top, thus making the class abstract. You should not attempt to make an instance of the trainer class, rather you should subclass it, and override the pure virtual method in the superclass.
-
-Within the subclass, you are free to use the protected methods from the superclass. If you would like to see examples on how to operate the superclass, see the game-hacks folder for a game-specific subclass in use.
-
-# Game Hacks
-This repository also comes with a folder containing an example of how to use the trainer. I may make more examples as time goes on, and each example technically works as its own functioning game hack in a header format.
+Examples usages can be found in the examples folder.
