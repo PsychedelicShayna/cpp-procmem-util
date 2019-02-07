@@ -4,8 +4,8 @@
 #include <Windows.h>    // The Windows OS API.
 #include <TlHelp32.h>	// Additional Windows API functions.
 #include <cstdint>   	// Alternative integer definitions.
-#include <string>		// std::string type.
-#include <vector>		// std::vector type.
+#include <string>	// std::string type.
+#include <vector>	// std::vector type.
 
 #ifndef __WIN64
 #define address_t uint32_t
