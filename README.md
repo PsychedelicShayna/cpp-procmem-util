@@ -1,4 +1,10 @@
-# Memory Interface
-This is a single header file, containing an interface (abstract class) that should be inherited from in order to use it. The interface contains methods designed to aid in accessing the memory of another process. This makes heavy use of the Windows.h and TlHelp32.h header and does not work on Unix based systems. This is exclusively a Windows interface. 
+# Winapi Memory Wrapper
+This is a very light wrapper around the Windows API to make it easier to access the memory of other processes. The wrapper comes in three forms, a class, interface, and namespace. The class option is the most outdated, and least recommended. The interface option is in the middle, and the namespace option is the recommended option. 
 
-Examples usages can be found in the [examples](https://github.com/Shayna-x02/MemoryInterface/tree/master/source/examples) folder. There is also a small [Wiki](https://github.com/Shayna-x02/MemoryInterface/wiki) at your disposal which contains a reference of all methods, as well as class usage instructions. 
+In the source folder, you'll find three subfolders containing all three versions. If you don't know which one to pick, then pick the namespace version. 
+
+## Building
+The wrapper is just a source file / header file combo. The wrapper is light enough as to where you can simply build it along with the rest of your project. If you wish though, you can run the makefile which will generate an object file, and a library file, which you can then link with the rest of your project.
+
+## Documentation
+  There is a Wiki that can be found [here](https://github.com/Shayna-x02/MemoryInterface/wiki) however it only covers the old interface version. There are comments in the [namespace version's header](source/Namespace/winmem.hxx) which contains information about what each function does, which I think is enough, as the wrapper is really not too complex.
