@@ -1,10 +1,5 @@
-# Winapi Memory Wrapper
-This is a very light wrapper around the Windows API to make it easier to access the memory of other processes. The wrapper comes in three forms, a class, interface, and namespace. The class option is the most outdated, and least recommended. The interface option is in the middle, and the namespace option is the recommended option. 
-
-In the source folder, you'll find three subfolders containing all three versions. If you don't know which one to pick, then pick the namespace version. 
+# Windows(.h) Process Memory Utilities
+This is a small set of utilities that minimize boilerplate code when working with the memory of other processes in the form of a namespace containing some relatively trivial but repetitive functions. Rather than re-writing these functions for each individual project, I wrote them all once, and grouped them in a namespace for my convenience (and hopefully yours too). 
 
 ## Building
-The wrapper is just a source file / header file combo. The wrapper is light enough as to where you can simply build it along with the rest of your project. If you wish though, you can run the makefile which will generate an object file, and a library file, which you can then link with the rest of your project.
-
-## Documentation
-  There is a Wiki that can be found [here](https://github.com/Shayna-x02/MemoryInterface/wiki) however it only covers the old interface version. There are comments in the [namespace version's header](source/Namespace/winmem.hxx) which contains information about what each function does, which I think is enough, as the wrapper is really not too complex.
+This is just a source/header combo that contains the relevant namespace, and is light enough to build along with the rest of your project (though Windows.h isn't exactly light, I assume you've already included it in your project if you plan on working with process memory through the Windows Api -- this is meant to make that process less tedious). However if you really want to go that route, I have included a Makefile that will build an object and library file for you (using clang). 
